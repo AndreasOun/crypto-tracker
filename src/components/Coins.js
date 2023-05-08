@@ -1,35 +1,49 @@
-import React from 'react'
-import CoinItem from './CoinItem'
-import Coin from '../routes/Coin'
-import { Link } from 'react-router-dom'
+import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import axios from 'axios';
+import CoinItem from './CoinItem';
 
-import './Coins.css'
+import './Coins.css';
 
-const Coins = (props) => {
-    return (
-        <div className='container'>
-            <div>
-                <div className='heading'>
-                    <p>#</p>
-                    <p className='coin-name'>Coin</p>
-                    <p>Price</p>
-                    <p>24h</p>
-                    <p className='hide-mobile'>Volume</p>
-                    <p className='hide-mobile'>Mkt Cap</p>
-                </div>
+const Coins = () => {
+  const [coins, setCoins] = useState([]);
 
-                {props.coins.map(coins => {
-                    return (
-                        <Link to={`/coin/${coins.id}`} element={<Coin />} key={coins.id}>
-                            <CoinItem coins={coins} />
-                        </Link>
+  const url =
+    'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=50&page=1&sparkline=false';
 
-                    )
-                })}
+  useEffect(() => {
+    axios
+      .get(url)
+      .then((response) => {
+        setCoins(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, [url]);
 
-            </div>
+  return (
+    <div className='container'>
+      <div>
+        <div className='heading'>
+          <p>#</p>
+          <p className='coin-name'>Coin</p>
+          <p>Price</p>
+          <p>24h</p>
+          <p className='hide-mobile'>Volume</p>
+          <p className='hide-mobile'>Mkt Cap</p>
         </div>
-    )
-}
 
-export default Coins
+        {coins.map((coin) => {
+          return (
+            <Link to={`/coin/${coin.id}`} key={coin.id}>
+              <CoinItem coins={coin} />
+            </Link>
+          );
+        })}
+      </div>
+    </div>
+  );
+};
+
+export default Coins;
