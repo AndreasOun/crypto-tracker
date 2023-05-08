@@ -1,0 +1,17 @@
+#footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 50px;
+    background-color: #191919;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .github-logo {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+  }

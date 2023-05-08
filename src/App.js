@@ -4,6 +4,7 @@ import { Routes, Route } from 'react-router-dom'
 import Coins from './components/Coins'
 import Coin from './routes/Coin'
 import Navbar from './components/Navbar'
+import Footer from './components/Footer'
 
 
 function App() {
@@ -13,13 +14,10 @@ function App() {
   const url = 'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=50&page=1&sparkline=false'
 
   useEffect(() => {
-    axios.get(url).then((response) => {
-      setCoins(response.data)
-      // console.log(response.data[0])
-    }).catch((error) => {
-      console.log(error)
-    })
-  }, [])
+    axios.get(url)
+      .then(response => setCoins(response.data))
+      .catch(error => console.log(error))
+  }, []) // empty array makes useEffect run once on mount
 
   return (
     <>
@@ -30,7 +28,7 @@ function App() {
           <Route path=':coinId' element={<Coin />} />
         </Route>
       </Routes>
-
+      <Footer />
     </>
   );
 }
